@@ -80,6 +80,8 @@ Regenerate with a live stack:
 npm run bench
 ```
 
+Structured benchmark source used by this README: `bench/results/latest.json`.
+
 ## Quickstart
 
 ### 1) Install dependencies
@@ -88,7 +90,13 @@ npm run bench
 npm install
 ```
 
-### 2) Configure environment
+### 2) Enable commit hooks (recommended for clean history)
+
+```bash
+npm run setup:hooks
+```
+
+### 3) Configure environment
 
 ```bash
 cp .env.example .env
@@ -100,19 +108,19 @@ PowerShell equivalent:
 Copy-Item .env.example .env
 ```
 
-### 3) Start infra dependencies
+### 4) Start infra dependencies
 
 ```bash
 docker compose up -d
 ```
 
-### 4) Apply migrations
+### 5) Apply migrations
 
 ```bash
 npm run -w control-plane migrate
 ```
 
-### 5) Run services (separate terminals)
+### 6) Run services (separate terminals)
 
 ```bash
 npm run -w control-plane dev
@@ -120,7 +128,7 @@ npm run -w worker dev
 npm run -w ui dev
 ```
 
-### 6) Open the dashboard
+### 7) Open the dashboard
 
 - UI: `http://localhost:5173`
 - API health: `http://localhost:8080/api/health`
@@ -140,6 +148,17 @@ npm run test
 npm run build
 ```
 
+## Evidence Map
+
+| Claim | Evidence |
+| --- | --- |
+| DAG validation and lifecycle correctness | `shared/tests/dag.test.ts`, `shared/tests/stateMachine.test.ts` |
+| Idempotent run triggers prevent duplicate run creation | `control-plane/tests/idempotency.integration.test.ts`, `control-plane/src/api/routes.ts`, `control-plane/migrations/001_init.sql` |
+| Retry/backoff and dead-letter recovery for worker failures | `worker/src/executor.ts`, `worker/tests/retry.integration.test.ts`, `docs/postmortems/2026-02-12-worker-crash-drill.md` |
+| Lease/heartbeat crash recovery model | `worker/src/executor.ts`, `control-plane/src/recovery/reaper.ts`, `docs/postmortems/2026-02-12-worker-crash-drill.md` |
+| Operator visibility in UI and metrics | `ui/tests/app.test.tsx`, `docs/assets/dashboard-runs.png`, `docs/assets/dashboard-tasks.png`, `control-plane/src/metrics/metrics.ts` |
+| Throughput claim (1.57 runs/s, 25/25 succeeded) | `bench/results/latest.json`, `bench/results/latest.md` |
+
 ## Key Endpoints
 
 - `POST /api/workflows`
@@ -156,10 +175,12 @@ npm run build
 - Conventional commits only.
 - One logical change per commit.
 - Commit body includes:
+  - `planned-date`
   - `why`
   - `what`
   - `verification`
 - No co-author trailers.
+- No AI trace text in commit messages.
 
 Commit plan and milestone mapping: `docs/commit-plan.md`
 

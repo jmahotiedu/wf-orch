@@ -6,12 +6,16 @@ This repository follows milestone commits with explicit dates and conventional c
 
 - Conventional commit subject on line 1.
 - One logical change per commit.
-- Commit body contains `why`, `what`, and `verification`.
+- Commit body contains `planned-date`, `why`, `what`, and `verification`.
+- `planned-date` must match the timeline date for the milestone subject.
 - No `Co-authored-by` trailers.
+- No AI trace text in commit messages.
 
 ## Commit Body Template
 
 ```text
+planned-date: YYYY-MM-DD
+
 why:
 - <motivation / problem>
 
