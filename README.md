@@ -2,11 +2,33 @@
 
 Distributed workflow orchestration platform built as a portfolio project to show end-to-end execution control: DAG validation, durable run/task state, Redis Streams dispatch, worker leases, retries/dead-letter, scheduler triggers, RBAC/rate limits, live dashboard, and production-style observability.
 
-## Live Cloud Deployment
+[![CI](https://github.com/jmahotiedu/wf-orch/actions/workflows/ci.yml/badge.svg)](https://github.com/jmahotiedu/wf-orch/actions/workflows/ci.yml)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-22-339933?logo=node.js&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
+![Redis Streams](https://img.shields.io/badge/Redis-Streams-DC382D?logo=redis&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-ECS_Fargate-FF9900?logo=amazonaws&logoColor=white)
 
-- Live URL: `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com`
-- Health: `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com/api/health`
+## Cloud Deployment Status
+
+Cloud infrastructure was deployed live on AWS on 2026-02-18, smoke-tested on 2026-02-19, and deprovisioned on 2026-02-19 to manage costs.
+
+- Historical ALB URL (now deprovisioned): `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com`
 - Infra: ECS Fargate (API/worker/UI), ALB, RDS Postgres, ElastiCache Redis, ECR, Terraform
+
+## Table of Contents
+
+- [90-Second Reviewer TL;DR](#90-second-reviewer-tldr)
+- [Problem](#problem)
+- [Demo](#demo)
+- [Architecture](#architecture)
+- [Stack](#stack)
+- [Benchmark Results](#benchmark-results)
+- [Quickstart](#quickstart)
+- [Cloud Deployment](#cloud-deployment)
+- [Quality Gates](#quality-gates)
+- [Additional Docs](#additional-docs)
 
 ## 90-Second Reviewer TL;DR
 
@@ -218,7 +240,7 @@ Estimated running cost (continuous): about `$55-$120/month`.
   - S3 state bucket created
   - DynamoDB lock table created
 - Live apply executed on `2026-02-18` via `scripts/deploy.sh` (`APPLY=true`).
-- ALB URL: `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com`
+- Historical ALB URL (now deprovisioned): `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com`
 - Health verification:
   - `GET /api/health` -> `200`
   - `GET /` -> `200`
@@ -228,7 +250,7 @@ Estimated running cost (continuous): about `$55-$120/month`.
   - Trigger probe runs when workflow create returns a new ID
 - Repeatable verification script: `scripts/cloud-smoke.sh`.
 
-### Live UI Notes
+### Cloud Demo Notes (When Deployed)
 
 - The live UI is token-gated and defaults to `admin-token`.
 - If no workflows exist, the dashboard appears empty by design until one is created.

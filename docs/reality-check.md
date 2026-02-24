@@ -2,7 +2,7 @@
 
 | Claim | Evidence | Status | Next Action |
 |---|---|---|---|
-| Live ALB is reachable | `GET /` and `GET /api/health` return `200` from `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com` | Verified | Keep `scripts/cloud-smoke.sh` in deploy checks |
+| Live ALB is currently reachable | Historical deploy checks on `2026-02-19` recorded `GET /` and `GET /api/health` as `200` from `http://workflow-orc-demo-alb-1577468805.us-east-1.elb.amazonaws.com`; stack was deprovisioned afterward for cost control | Historical verification | Re-run `scripts/deploy.sh` + `scripts/cloud-smoke.sh` before any new live demo |
 | Live system supports creating and triggering workflows | API supports `POST /api/workflows` and `POST /api/workflows/:id/trigger`; UI now exposes both actions | Verified | Keep seed workflow script for quick demos |
 | Dashboard always shows activity by default | Live environment may contain zero workflows/runs at startup | Partial | Run `npm run demo:live-seed` before demos |
 | Runtime state is durable | Control-plane and worker use Postgres-backed store (`control-plane/src/store/postgresStore.ts`) | Verified | Keep migration step mandatory in runbooks |
